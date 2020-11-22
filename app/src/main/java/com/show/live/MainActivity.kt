@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.show.livebus.BroadcastLiveDataBus
+import com.show.livebus.LiveDataEvent
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.reflect.ParameterizedType
 
@@ -18,14 +21,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
+
         startService(Intent(this,ProcessService::class.java))
-        live.broadcast("data",1)
 
 
         btn.setOnClickListener {
-
+            live.broadcast("data",22)
         }
-
 
     }
 }

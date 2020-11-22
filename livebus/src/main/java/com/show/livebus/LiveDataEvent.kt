@@ -7,9 +7,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 
-open class LiveDataEvent<T> constructor(value: T? = null, private var isSticky: Boolean = false) : MutableLiveData<T>(value) {
+open class LiveDataEvent<T> constructor(value: T? = null, private var isSticky: Boolean = false) : MutableLiveData<T>() {
 
     private val wrapperStores by lazy { ArrayMap<Int, Boolean>() }
+
+    init {
+        if(value!=null){
+            this.value = value
+        }
+    }
 
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
         var storeId = -1
@@ -45,7 +51,7 @@ open class LiveDataEvent<T> constructor(value: T? = null, private var isSticky: 
 
 
     @Synchronized
-    override fun setValue(value: T) {
+    override fun setValue(value: T?) {
         if(!isSticky){
             for(entry in wrapperStores.entries){
                 entry.setValue(false)

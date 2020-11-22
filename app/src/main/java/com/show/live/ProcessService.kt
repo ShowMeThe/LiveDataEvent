@@ -16,9 +16,8 @@ import com.show.livebus.BroadcastLiveDataBus
  */
 class ProcessService : LifecycleService() {
 
-    private val live = BroadcastLiveDataBus<Data>()
+    private val live = BroadcastLiveDataBus<Int>()
 
-    private val live2 = BroadcastLiveDataBus<Int>()
 
     override fun onCreate() {
         super.onCreate()
@@ -26,7 +25,7 @@ class ProcessService : LifecycleService() {
 
         live.observeBroadcast("data",this,{
             it?.apply {
-                Log.e("22222","${it.t}")
+                Log.e("22222","${it}")
             }
         })
 
