@@ -19,9 +19,8 @@ import java.lang.reflect.ParameterizedType
  *  ShowMeThe
  */
 const val add_key = "BroadcastLiveDataBus_"
-const val add_type = "Type"
-class BroadcastLiveDataBus<T>(value: T? = null, isSticky: Boolean = false) :
-    LiveDataEvent<Wrapper<T>>(Wrapper(value),isSticky) {
+class BroadcastLiveDataBus<T>(value: T? = null) :
+    LiveDataEvent<Wrapper<T>>(Wrapper(value),false) {
 
 
 
@@ -35,7 +34,7 @@ class BroadcastLiveDataBus<T>(value: T? = null, isSticky: Boolean = false) :
     }
 
 
-    fun observeBroadcast(key: String,owner: LifecycleOwner, observer: Observer<Wrapper<in T>>){
+    fun observeBroadcast(key: String,owner: LifecycleOwner, observer: Observer<Wrapper<T>>){
         val receiver = IpcReceiver(key)
         val application = Apps.getApplication()
         application.registerReceiver(receiver, IntentFilter("$add_key$key"))

@@ -19,11 +19,11 @@ class MainActivity : AppCompatActivity() {
 
 
         startService(Intent(this,ProcessService::class.java))
-
+        live.broadcast("data",1)
 
 
         btn.setOnClickListener {
-            live.broadcast("data",1)
+
         }
 
 
