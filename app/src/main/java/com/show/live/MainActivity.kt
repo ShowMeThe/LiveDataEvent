@@ -11,7 +11,7 @@ import java.lang.reflect.ParameterizedType
 
 class MainActivity : AppCompatActivity() {
 
-    private val live = BroadcastLiveDataBus<String>()
+    private val live = BroadcastLiveDataBus<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
 
         btn.setOnClickListener {
-            live.broadcast("data","live")
+            live.broadcast("data",1)
         }
 
 

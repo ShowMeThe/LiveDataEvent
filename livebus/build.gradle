@@ -78,9 +78,9 @@ bintray {
     pkg {
         repo = 'LiveBus'
         name = 'LiveBus'
-        version("0.0.1")
+        version("0.0.2")
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/ShowMeThe/kinit.git'
+        vcsUrl = 'https://github.com/ShowMeThe/LiveDataEvent.git'
     }
     configurations = ['archives']
     publications = ['MyPublication']
@@ -91,9 +91,9 @@ afterEvaluate {
         publications {
             MyPublication(MavenPublication) {
                 from components.release
-                groupId = 'com.show.livebus'
+                groupId = 'com.github.ShowMeThe'
                 artifactId = 'livebus'
-                version = '0.0.1'
+                version = '0.0.2'
             }
         }
     }
@@ -131,7 +131,11 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compileOnly 'androidx.appcompat:appcompat:1.2.0'
     compileOnly "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-beta01"
     compileOnly "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-beta01"
 }
+
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.ShowMeThe'
