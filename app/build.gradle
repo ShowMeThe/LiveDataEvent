@@ -43,5 +43,5 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-beta01"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
-
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.5")
 }

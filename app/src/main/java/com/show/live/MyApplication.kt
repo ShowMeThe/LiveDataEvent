@@ -1,9 +1,8 @@
 package com.show.live
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.show.livebus.LiveDataEvent
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 
 /**
  *  com.show.myapplication
@@ -11,19 +10,16 @@ import com.show.livebus.LiveDataEvent
  *  11:05
  *  ShowMeThe
  */
-class MyApplication : Application() {
+class MyApplication : Application(), ViewModelStoreOwner {
 
-    companion object{
-
-        val life = LiveDataEvent<String>()
-
-        val live = MutableLiveData<String>()
-
-    }
+    private val modelStore by lazy { ViewModelStore() }
 
     override fun onCreate() {
         super.onCreate()
+        AppContext.get().attach(this)
 
 
     }
+
+    override fun getViewModelStore(): ViewModelStore = modelStore
 }
