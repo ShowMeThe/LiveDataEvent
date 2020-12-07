@@ -78,7 +78,7 @@ bintray {
     pkg {
         repo = 'LiveBus'
         name = 'LiveBus'
-        version("0.0.4")
+        version("0.0.5")
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/ShowMeThe/LiveDataEvent.git'
     }
@@ -93,7 +93,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.ShowMeThe'
                 artifactId = 'livebus'
-                version = '0.0.4'
+                version = '0.0.5'
             }
         }
     }

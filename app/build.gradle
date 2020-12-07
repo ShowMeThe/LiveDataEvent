@@ -41,6 +41,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-service:2.3.0-beta01"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-beta01"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-beta01"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
 
 }

@@ -20,13 +20,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        MyApplication.life.observe(this, Observer {
+            it?.apply {
+                Log.e("222222222","from new $it")
+            }
+        })
 
 
-        startService(Intent(this,ProcessService::class.java))
+        MyApplication.live.observe(this, Observer {
+            it?.apply {
+                Log.e("222222222","from old $it")
+            }
+        })
+
+        MyApplication.life.observeForever(this, Observer {
+            it?.apply {
+                Log.e("222222222","from new observeForever $it")
+            }
+        })
 
 
         btn.setOnClickListener {
-            live.broadcast("data",22)
+             startActivity(Intent(this,MainActivity2::class.java))
         }
 
     }
