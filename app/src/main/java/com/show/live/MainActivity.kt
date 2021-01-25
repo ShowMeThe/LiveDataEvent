@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
 
-    val live = LiveDataEvent<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,25 +18,12 @@ class MainActivity : AppCompatActivity() {
 
         Log.e("222222222","onCreate")
 
-        getShareViewModel().life.observe(this, Observer {
-            it?.apply {
-                Log.e("222222222","from new $it")
-            }
-        })
-
-
-
-
-//        getShareViewModel().life.observeForever(this, Observer {
-//            it?.apply {
-//                Log.e("222222222","from new observeForever $it")
-//            }
-//        })
-
-
-        btn.setOnClickListener {
-             startActivity(Intent(this,MainActivity2::class.java))
+        btn2.setOnClickListener {
+            getShareViewModel().life.broadcast("data","data")
         }
+
+
+        startService(Intent(this,ProcessService::class.java))
 
     }
 
