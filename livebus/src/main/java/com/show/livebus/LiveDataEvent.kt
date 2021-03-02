@@ -8,7 +8,8 @@ import androidx.lifecycle.*
 import java.lang.ref.WeakReference
 import java.util.ArrayList
 
-open class LiveDataEvent<T> constructor(value: T? = null, private var isSticky: Boolean = false) :
+open class LiveDataEvent<T> constructor(value: T? = null, private var isSticky: Boolean = false,
+                                        private var distinctUntilChanged:Boolean = false) :
     MutableLiveData<T>() {
 
     private val wrapperStores by lazy { ArrayMap<Int, Boolean>() }
@@ -112,6 +113,9 @@ open class LiveDataEvent<T> constructor(value: T? = null, private var isSticky: 
             for (entry in wrapperStores.entries) {
                 entry.setValue(false)
             }
+        }
+        if(distinctUntilChanged && value == getValue()){
+            return
         }
         super.setValue(value)
     }
