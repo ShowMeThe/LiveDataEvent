@@ -46,8 +46,8 @@ dokka {
     configuration {
         externalDocumentationLink {
             noAndroidSdkLink = true
-            url = new URL("file:D:/lib/LiveDataEvent/package-list")
-            packageListUrl = new URL("file:D:/lib/LiveDataEvent/package-list")
+            url = new URL("https://github.com/ShowMeThe/LiveDataEvent/blob/master/package-list")
+            packageListUrl = new URL("https://github.com/ShowMeThe/LiveDataEvent/blob/master/package-list")
         }
     }
 }
@@ -78,7 +78,7 @@ bintray {
     pkg {
         repo = 'LiveBus'
         name = 'LiveBus'
-        version("0.0.7")
+        version("1.0.0")
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/ShowMeThe/LiveDataEvent.git'
     }
@@ -93,7 +93,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.ShowMeThe'
                 artifactId = 'livebus'
-                version = '0.0.7'
+                version = '1.0.0'
             }
         }
     }
@@ -135,6 +135,7 @@ dependencies {
     compileOnly 'androidx.appcompat:appcompat:1.2.0'
     compileOnly "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-beta01"
     compileOnly "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-beta01"
+    compileOnly("com.github.ShowMeThe:launch:1.0.0")
 }
 
 apply plugin: 'com.github.dcendents.android-maven'

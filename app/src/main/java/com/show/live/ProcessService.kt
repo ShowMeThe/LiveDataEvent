@@ -16,14 +16,11 @@ import com.show.livebus.BroadcastLiveDataBus
  */
 class ProcessService : LifecycleService() {
 
-    private val live = BroadcastLiveDataBus<Int>()
-
-
     override fun onCreate() {
         super.onCreate()
 
 
-        live.observeBroadcast("data",this,{
+        getShareViewModel().life.observeBroadcast("data",this,{
             it?.apply {
                 Log.e("22222","${it}")
             }

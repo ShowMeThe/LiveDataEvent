@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import com.show.livebus.BroadcastLiveDataBus
 
 
 private val viewModel by lazy { ShareViewModel::class.java.getAppViewModel() }
@@ -17,7 +18,7 @@ inline fun <reified T : ViewModel> Class<T>.getAppViewModel() = ViewModelProvide
 class ShareViewModel(application: Application) : AndroidViewModel(application) {
 
 
-    val life = LiveDataEvent<String>()
+    val life = BroadcastLiveDataBus<String>()
 
 
 }
