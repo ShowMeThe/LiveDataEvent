@@ -18,12 +18,17 @@ class MainActivity : AppCompatActivity() {
 
         Log.e("222222222","onCreate")
 
-        btn2.setOnClickListener {
-            getShareViewModel().life.broadcast("data","data")
+        btn.setOnClickListener {
+            startActivity(Intent(this,MainActivity2::class.java))
         }
 
 
-        startService(Intent(this,ProcessService::class.java))
+        btn2.setOnClickListener {
+            getShareViewModel().life.value = "data"
+        }
+
+
+        //startService(Intent(this,ProcessService::class.java))
 
     }
 

@@ -7,12 +7,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import java.lang.ref.WeakReference
 import java.util.ArrayList
+import java.util.concurrent.atomic.AtomicLong
 
-open class LiveDataEvent<T> constructor(value: T? = null, private var isSticky: Boolean = false,
-                                        private var distinctUntilChanged:Boolean = false) :
+open class LiveDataEvent<T> constructor(
+    value: T? = null, private var isSticky: Boolean = false,
+    private var distinctUntilChanged: Boolean = false
+) :
     MutableLiveData<T>() {
 
-    private val wrapperStores by lazy { ArrayMap<Int, Boolean>() }
+    private val mLiveVersion = AtomicLong(-1)
 
     init {
         if (value != null) {
@@ -21,100 +24,55 @@ open class LiveDataEvent<T> constructor(value: T? = null, private var isSticky: 
     }
 
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
-        var storeId = -1
-        if (!isSticky) {
-            storeId = when (owner) {
-                is AppCompatActivity -> {
-                    System.identityHashCode(owner.viewModelStore)
-                }
-                is Fragment -> {
-                    System.identityHashCode(owner.viewLifecycleOwner)
-                }
-                else -> {
-                    System.identityHashCode(owner)
-                }
-            }
-            if (wrapperStores[storeId] == null) {
-                wrapperStores[storeId] = true
-            }
-        }
-        val callback = Observer<T> {
-            if (!isSticky) {
-                if (wrapperStores[storeId] != null) {
-                    val store = wrapperStores[storeId]!!
-                    if (!store) {
-                        wrapperStores[storeId] = true
-                        observer.onChanged(it)
-                    }
-                }
-            } else {
-                observer.onChanged(it)
-            }
+        if (isSticky.not()) {
+            super.observe(owner, ObserverWrapper(mLiveVersion.get(), observer))
+        } else {
+            super.observe(owner, observer)
         }
         val lifeCallBack = object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
             fun onDestroy() {
                 removeObservers(owner)
-                removeObserver(callback)
                 owner.lifecycle.removeObserver(this)
             }
         }
         owner.lifecycle.addObserver(lifeCallBack)
-        super.observe(owner, callback)
     }
 
     fun observeForever(owner: LifecycleOwner, observer: Observer<in T>) {
-        var storeId = -1
-        if (!isSticky) {
-            storeId = when (owner) {
-                is AppCompatActivity -> {
-                    System.identityHashCode(owner.viewModelStore)
-                }
-                is Fragment -> {
-                    System.identityHashCode(owner.viewLifecycleOwner)
-                }
-                else -> {
-                    System.identityHashCode(owner)
-                }
-            }
-            if (wrapperStores[storeId] == null) {
-                wrapperStores[storeId] = true
-            }
-        }
-        val callback = Observer<T> {
-            if (!isSticky) {
-                if (wrapperStores[storeId] != null) {
-                    val store = wrapperStores[storeId]!!
-                    if (!store) {
-                        wrapperStores[storeId] = true
-                        observer.onChanged(it)
-                    }
-                }
-            } else {
-                observer.onChanged(it)
-            }
+        if (isSticky.not()) {
+            super.observeForever(ObserverWrapper(mLiveVersion.get(), observer))
+        } else {
+            super.observeForever(observer)
         }
         val lifeCallBack = object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
             fun onDestroy() {
                 removeObservers(owner)
-                removeObserver(callback)
                 owner.lifecycle.removeObserver(this)
             }
         }
         owner.lifecycle.addObserver(lifeCallBack)
-        super.observeForever(callback)
     }
 
 
-    @Synchronized
-    override fun setValue(value: T?) {
-        if (!isSticky) {
-            for (entry in wrapperStores.entries) {
-                entry.setValue(false)
+    inner class ObserverWrapper<T>(
+        private val parentVersion: Long,
+        private val observer: Observer<in T>
+    ) : Observer<T> {
+        override fun onChanged(t: T) {
+            if (mLiveVersion.get() > parentVersion) {
+                observer.onChanged(t)
             }
         }
-        if(distinctUntilChanged && value == getValue()){
+    }
+
+    @Synchronized
+    override fun setValue(value: T?) {
+        if (isSticky.not()) {
+            mLiveVersion.getAndIncrement()
+        }
+        if (distinctUntilChanged && value == getValue()) {
             return
         }
         super.setValue(value)
