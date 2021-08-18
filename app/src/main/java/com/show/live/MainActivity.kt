@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.e("222222222","onCreate")
+
 
         btn.setOnClickListener {
             startActivity(Intent(this,MainActivity2::class.java))
@@ -24,11 +24,19 @@ class MainActivity : AppCompatActivity() {
 
 
         btn2.setOnClickListener {
-            getShareViewModel().life.value = "data"
+           btn2.postDelayed({
+               getShareViewModel().life.value = "data"
+           },5000)
+        }
+
+        btn3.setOnClickListener {
+            btn2.postDelayed({
+                getShareViewModel().life.broadcast("MyName","data")
+            },2000)
         }
 
 
-        //startService(Intent(this,ProcessService::class.java))
+        startService(Intent(this,ProcessService::class.java))
 
     }
 

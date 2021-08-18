@@ -19,7 +19,7 @@ inline fun <reified T : ViewModel> Class<T>.getAppViewModel() = ViewModelProvide
 class ShareViewModel(application: Application) : AndroidViewModel(application) {
 
 
-    val life = LiveDataEvent<String>()
+    val life = BroadcastLiveDataBus<String>()
 
 
 }

@@ -24,15 +24,19 @@ open class LiveDataEvent<T> constructor(
     }
 
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
-        if (isSticky.not()) {
-            super.observe(owner, ObserverWrapper(mLiveVersion.get(), observer))
+        val out = if (isSticky.not()) {
+            val wrapper = ObserverWrapper(mLiveVersion.get(), observer)
+            super.observe(owner, wrapper)
+            wrapper
         } else {
             super.observe(owner, observer)
+            observer
         }
         val lifeCallBack = object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
             fun onDestroy() {
                 removeObservers(owner)
+                removeObserver(out as Observer<in T>)
                 owner.lifecycle.removeObserver(this)
             }
         }
@@ -40,15 +44,19 @@ open class LiveDataEvent<T> constructor(
     }
 
     fun observeForever(owner: LifecycleOwner, observer: Observer<in T>) {
-        if (isSticky.not()) {
-            super.observeForever(ObserverWrapper(mLiveVersion.get(), observer))
+        val out = if (isSticky.not()) {
+            val wrapper = ObserverWrapper(mLiveVersion.get(), observer)
+            super.observeForever(wrapper)
+            wrapper
         } else {
             super.observeForever(observer)
+            observer
         }
         val lifeCallBack = object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
             fun onDestroy() {
                 removeObservers(owner)
+                removeObserver(out as Observer<in T>)
                 owner.lifecycle.removeObserver(this)
             }
         }

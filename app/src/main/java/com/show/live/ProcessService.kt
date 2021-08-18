@@ -20,10 +20,8 @@ class ProcessService : LifecycleService() {
         super.onCreate()
 
 
-        getShareViewModel().life.observeBroadcast("data",this,{
-            it?.apply {
-                Log.e("22222","${it}")
-            }
+        getShareViewModel().life.observeBroadcast("MyName",this,{
+            Log.e("2222222","ProcessService ${it}")
         })
 
     }
